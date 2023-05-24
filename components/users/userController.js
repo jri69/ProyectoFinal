@@ -1,70 +1,65 @@
 const { models } = require('../../libs/sequelize');
-const boom = require('@hapi/boom');
-const { comparePassword, hashPassword } = require('../../libs/utils/bcrypt');
+const sequelize = require('sequelize');
 
-class UserController {
-  constructor() {}
+class UsuarioController {
+  constructor() { }
 
   async add(data) {
-    const hash = await hashPassword(data.password);
-    const newUser = await models.User.create({
+    const usuario = await models.Usuario.create({
       ...data,
-      password: hash,
     });
-    delete newUser.dataValues.password;
-    delete newUser.dataValues.recoveryToken;
-    return newUser;
+    return usuario;
   }
 
   async edit(data, id) {
-    const hash = await hashPassword(data.password);
-    const user = await this.find(id);
-    const UserUpdated = await user.update({
+    const usuario = await this.find(id);
+    const usuarioUpdated = await usuario.update({
       ...data,
-      password: hash,
     });
-    delete UserUpdated.dataValues.password;
-    delete UserUpdated.dataValues.recoveryToken;
-    return UserUpdated;
+    return usuarioUpdated;
   }
 
   async delete(id) {
-    const user = await this.find(id);
-    await user.destroy();
+    const usuario = await this.find(id);
+    await usuario.destroy();
     return id;
   }
 
   async find(id) {
-    const UserFound = await models.User.findByPk(id, {
-      attributes: { exclude: ['password', 'recoveryToken'] },
-    });
-    if (!UserFound) {
-      throw boom.notFound('User not found');
-    }
-    return UserFound;
-  }
-
-  async findByEmail(email) {
-    const rta = await models.User.findOne({
-      where: { email },
-      attributes: { exclude: ['password', 'recoveryToken'] },
-    });
-    return rta;
-  }
-
-  async findByEmailAuth(email) {
-    const rta = await models.User.findOne({
-      where: { email },
-    });
-    return rta;
+    const usuarioFound = await models.Usuario.findByPk(id);
+    return usuarioFound;
   }
 
   async getAll() {
-    const users = await models.User.findAll({
-      attributes: { exclude: ['password', 'recoveryToken'] },
-    });
-    return users;
+    const usuarios = await models.Usuario.findAll();
+    return usuarios;
+  }
+
+  async promedioEdad() {
+    const usuarios = await models.Usuario.findAll();
+    const totalUsuarios = usuarios.length;
+    const sumaEdades = usuarios.reduce((acc, usuario) => {
+      const { fecha_nacimiento } = usuario;
+      const edad = this.calcularEdad(fecha_nacimiento);
+      return acc + edad;
+    }, 0);
+    const promedioEdad = sumaEdades / totalUsuarios;
+    return {
+      promedioEdad: promedioEdad
+    };
+  }
+
+  calcularEdad(fechaNacimiento) {
+    const hoy = new Date();
+    const año_nacimiento = fechaNacimiento.split('/')[2];
+    const cumpleanos = new Date(parseInt(año_nacimiento), 0, 1);
+    let edad = hoy.getFullYear() - cumpleanos.getFullYear();
+    const mes = hoy.getMonth() - cumpleanos.getMonth();
+    if (mes < 0 || (mes === 0 && hoy.getDate() < cumpleanos.getDate())) {
+      edad--;
+    }
+    return edad;
   }
 }
 
-module.exports = UserController;
+module.exports = UsuarioController;

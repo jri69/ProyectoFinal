@@ -1,15 +1,5 @@
-# Estructura para proyectos de NodeJs
-
-_Estructura inicial para proyectos backend hechos con NodeJs._
-
-## Comenzando 🚀
-
-_Estas instrucciones te permitirán obtener una copia del proyecto en funcionamiento en tu máquina local para propósitos de desarrollo y pruebas._
-
 
 ### Pre-requisitos 📋
-
-_Que cosas necesitas para instalar el software y como instalarlas_
 
 ```
  Tener instalado Nodejs y npm en su maquina local
@@ -47,25 +37,22 @@ _Finalmente ejecutar_
   npm run dev
 ```
 
-_Siguiendo estos pasos en la terminal te saldra el link con la direccion donde se esta ejecutando el servidor_
+_EndPoints_
+```
+ GET: http://localhost:3000/api/usuarios
+ GET: http://localhost:3000/api/usuarios/1
+ POST: http://localhost:3000/api/usuarios
+      {
+        "nombre": "juan",
+        "primer_apellido": "inclan",
+        "segundo_apellido": "",
+        "fecha_nacimiento": "20/01/1990",
+        "cedula_identidad": "1254648"
+      }
+ PUT: http://localhost:3000/api/usuarios/1
+ DELETE: http://localhost:3000/api/usuarios/1
+ GET: http://localhost:3000/api/usuarios/promedio-edad
 
+ GET: http://localhost:3000/api/estado 
 
-## Construido con 🛠️
-
-* [Express](https://expressjs.com/) - El framework web usado
-* [Npm](https://docs.npmjs.com/) - Manejador de dependencias
-* [Sequelize](https://sequelize.org/docs/v6/) - ORM
-* [PassportJs](https://www.passportjs.org/docs/) - Authentication middleware 
-
-## Autores ✒️
-
-* **Nahuel Zalazar VIllca** - *Todo el proyecto* - [nahuelXZV](https://github.com/nahuelXZV/)
-
-También puedes mirar la lista de todos los [contribuyentes](https://github.com/your/project/contributors) quíenes han participado en este proyecto. 
-
-## Licencia 📄
-
-Este proyecto está bajo la Licencia (ISC)
-
----
-⌨️ con ❤️ por [nahuelXZV](https://github.com/nahuelXZV/) 😊
+```

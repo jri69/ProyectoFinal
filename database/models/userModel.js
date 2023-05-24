@@ -1,55 +1,49 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
-const USER_TABLE = 'user';
+const USUARIO_TABLE = 'usuario';
 
-const UserSchema = {
+const UsuarioSchema = {
   id: {
     allowNull: false, // not null
     autoIncrement: true,
     primaryKey: true,
     type: DataTypes.INTEGER
   },
-  email: {
+  nombre: {
     allowNull: false,
-    type: DataTypes.STRING,
-    unique: true,
+    type: DataTypes.STRING(50)
   },
-  password: {
+  primer_apellido: {
     allowNull: false,
-    type: DataTypes.STRING
+    type: DataTypes.STRING(50)
   },
-  recoveryToken: {
-    allowNull: true,
-    type: DataTypes.STRING,
-    field: 'recovery_token'
-  },
-  role: {
+  segundo_apellido: {
     allowNull: false,
-    type: DataTypes.STRING,
-    defaultValue: 'public'
+    type: DataTypes.STRING(50)
   },
-  createdAt: {
+  cedula_identidad: {
     allowNull: false,
-    type: DataTypes.DATE,
-    field: 'create_at',
-    defaultValue: Sequelize.NOW
+    type: DataTypes.STRING(50)
+  },
+  fecha_nacimiento: {
+    allowNull: false,
+    type: DataTypes.STRING(50)
   }
 }
 
-class User extends Model {
+class Usuario extends Model {
   static associate(models) {
-    // associations can be defined here
   }
 
   static config(sequelize) {
     return {
       sequelize,
-      tableName: USER_TABLE,
-      modelName: 'User',
+      tableName: USUARIO_TABLE,
+      modelName: 'Usuario',
       timestamps: false
     }
   }
 }
 
 
-module.exports = { USER_TABLE, UserSchema, User }
+module.exports = { USUARIO_TABLE, UsuarioSchema, Usuario }
